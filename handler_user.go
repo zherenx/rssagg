@@ -65,6 +65,7 @@ func (apiCfg *apiConfig) handlerGetUser(w http.ResponseWriter, r *http.Request) 
 	user, err := apiCfg.DB.GetUser(r.Context(), apiKey)
 	if err != nil {
 		respondWithError(w, http.StatusNotFound, fmt.Sprintf("Could not get user with API Key: %v", err))
+		return
 	}
 
 	// TODO:
