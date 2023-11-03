@@ -32,7 +32,7 @@ func (apiCfg *apiConfig) handlerCreateUser(w http.ResponseWriter, r *http.Reques
 	// nil check/handle (i.e. "name" field not exist case), and differentiate
 	// nil case and empty string case
 	if params.Name == nil {
-		respondWithError(w, http.StatusBadRequest, "Name is not found")
+		respondWithError(w, http.StatusBadRequest, "Name field is not presented")
 		return
 	} else if *params.Name == "" {
 		respondWithError(w, http.StatusBadRequest, "Name shouldn't be empty")
