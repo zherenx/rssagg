@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/zherenx/rssagg/internal/auth"
 	"github.com/zherenx/rssagg/internal/database"
 )
 
@@ -55,22 +54,17 @@ func (apiCfg *apiConfig) handlerCreateUser(w http.ResponseWriter, r *http.Reques
 	respondWithJSON(w, http.StatusCreated, databaseUserToUser(user))
 }
 
-func (apiCfg *apiConfig) handlerGetUser(w http.ResponseWriter, r *http.Request) {
-	apiKey, err := auth.GetApiKey(r.Header)
-	if err != nil {
-		respondWithError(w, http.StatusUnauthorized, fmt.Sprintf("Could not get API Key: %v", err))
-		return
-	}
-
-	user, err := apiCfg.DB.GetUser(r.Context(), apiKey)
-	if err != nil {
-		respondWithError(w, http.StatusNotFound, fmt.Sprintf("Could not get user with API Key: %v", err))
-		return
-	}
-
-	// TODO:
+/*
+Note:
+After adapting the middleware, the get user function now takes
+a user as argument, which is so weird to me, still looking how
+to improve
+*/
+// func (apiCfg *apiConfig) handlerGetUser(w http.ResponseWriter, r *http.Request) {
+func handlerGetUser(w http.ResponseWriter, r *http.Request, user *database.User) {
+	// Note:
 	// I think there is a potential improvement here, I think this function
 	// shouldn't return the API Key, and we should also consider hiding the
 	// API Key (e.g. storing only the hash value in the database)
-	respondWithJSON(w, http.StatusOK, databaseUserToUser(user))
+	respondWithJSON(w, http.StatusOK, databaseUserToUser(*user))
 }
