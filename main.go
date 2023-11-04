@@ -65,6 +65,12 @@ func main() {
 	v1Router.Post("/feeds", apiCfg.AuthMiddleware(apiCfg.handlerCreateFeedWithUser))
 	v1Router.Get("/feeds", apiCfg.handlerGetFeeds)
 
+	v1Router.Post("/feed_follows", apiCfg.AuthMiddleware(apiCfg.HandlerCreateFeedFollowForUser))
+	v1Router.Get("/feed_follows", apiCfg.AuthMiddleware(apiCfg.HandlerGetFeedFollowsOfUser))
+	// Note: http delete requests do not typically have a body in the payload,
+	// it's more conventional to pass the id in the http path
+	v1Router.Delete("/feed_follows/{feedFollowId}", apiCfg.AuthMiddleware(apiCfg.HandlerDeleteFeedFollowForUser))
+
 	router.Mount("/v1", v1Router)
 
 	srv := &http.Server{
