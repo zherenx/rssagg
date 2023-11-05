@@ -15,6 +15,12 @@ import (
 	_ "github.com/lib/pq"
 )
 
+/*
+Note:
+question, kind of, why do we need this? couldn't we just use database.Queries
+directly (when creating a handler method)? is it due to the fact that we
+couldn't/shouldn't change the sqlc generated code?
+*/
 // hold a connection to a database
 type apiConfig struct {
 	DB *database.Queries
