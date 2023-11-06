@@ -13,7 +13,7 @@ type RSSFeed struct {
 		Link        string    `xml:"link"`
 		Description string    `xml:"description"`
 		Language    string    `xml:"language"`
-		Item        []RSSItem `xml:"item"`
+		Items       []RSSItem `xml:"item"` // Node: I rename Item to Items as I think it makes more sense, but I am not sure if this violate any standard practice of go
 	} `xml:"channel"`
 }
 
