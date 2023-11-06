@@ -81,6 +81,8 @@ func main() {
 	// it's more conventional to pass the id in the http path
 	v1Router.Delete("/feed_follows/{feedFollowId}", apiCfg.AuthMiddleware(apiCfg.HandlerDeleteFeedFollowForUser))
 
+	v1Router.Get("/posts", apiCfg.AuthMiddleware(apiCfg.handlerGetPostsForUser))
+
 	router.Mount("/v1", v1Router)
 
 	srv := &http.Server{

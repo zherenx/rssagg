@@ -68,3 +68,17 @@ func handlerGetUser(w http.ResponseWriter, r *http.Request, user *database.User)
 	// API Key (e.g. storing only the hash value in the database)
 	respondWithJSON(w, http.StatusOK, databaseUserToUser(*user))
 }
+
+func (apiCfg *apiConfig) handlerGetPostsForUser(w http.ResponseWriter, r *http.Request, user *database.User) {
+
+	posts, err := apiCfg.DB.GetPostsForUser(r.Context(), database.GetPostsForUserParams{
+		UserID: user.ID,
+		Limit:  10, // TODO: this should be extracted as a variable; or should i expect this from the request?
+	})
+	if err != nil {
+		respondWithError(w, http.StatusBadRequest, fmt.Sprintf("Error getting posts for user: %v", err))
+		return
+	}
+
+	respondWithJSON(w, http.StatusOK, databasePostsForUserRowsToPosts(posts))
+}
