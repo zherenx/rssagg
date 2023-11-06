@@ -2,10 +2,12 @@ package main
 
 import (
 	"context"
+	"database/sql"
 	"log"
 	"sync"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/zherenx/rssagg/internal/database"
 )
 
@@ -55,6 +57,38 @@ func scrapeFeed(db *database.Queries, wg *sync.WaitGroup, feed database.Feed) {
 		return
 	}
 
-	// TODO: save to db instead of loging
-	log.Println(rssFeed)
+	for _, item := range rssFeed.Channel.Items {
+
+		description := sql.NullString{}
+		if item.Description != "" {
+			description.String = item.Description
+			description.Valid = true
+		} else {
+			description.Valid = false
+		}
+
+		// TODO: should support all/more time formats
+		t, err := time.Parse(time.RFC1123Z, item.PubDate)
+		if err != nil {
+			log.Println("Error parsing date string:", err)
+			continue
+		}
+
+		_, err = db.CreatePost(context.Background(), database.CreatePostParams{
+			ID:          uuid.New(),
+			CreatedAt:   time.Now().UTC(),
+			UpdatedAt:   time.Now().UTC(),
+			Title:       item.Title,
+			Description: description,
+			PublishedAt: t,
+			Url:         item.Link,
+			FeedID:      feed.ID,
+		})
+		if err != nil {
+			log.Println("Error writing post to database:", err)
+			continue
+		}
+	}
+
+	log.Printf("Feed %s collected, %v posts found\n", feed.Name, len(rssFeed.Channel.Items))
 }
