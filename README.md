@@ -20,6 +20,8 @@ While working on the project, I also consulted a diverse range of resources such
 ## Potential Improvements/Extensions
 
 - front-end
+- apikey handling improvement (e.g. storing only the hash value in the database)
+- logging, and implement a logger
 - robustness improvement (e.g. different/more date formats should be supported)
 - refactoring of some functions/duplicated code
 - etc.
