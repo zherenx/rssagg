@@ -38,3 +38,4 @@ While working on the project, I also consulted a diverse range of resources such
 - Sharing Values with Go Handlers, <https://drstearns.github.io/tutorials/gohandlerctx/>
 - About http.handler interface, <https://lets-go.alexedwards.net/sample/02.09-the-http-handler-interface.html>
 - JSON and Go, <https://go.dev/blog/json>
+- Handling API Key, <https://www.freecodecamp.org/news/best-practices-for-building-api-keys-97c26eabfea9/>
